@@ -6,9 +6,9 @@ namespace Tribeea.Pages.Events
 {
     public class CreateModel : PageModel
     {
-        private readonly Tribeea.Data.ApplicationDbContext _context;
+        private readonly Data.ApplicationDbContext _context;
 
-        public CreateModel(Tribeea.Data.ApplicationDbContext context)
+        public CreateModel(Data.ApplicationDbContext context)
         {
             _context = context;
         }

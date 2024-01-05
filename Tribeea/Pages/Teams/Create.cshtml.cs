@@ -12,9 +12,9 @@ namespace Tribeea.Pages.Teams
 {
     public class CreateModel : PageModel
     {
-        private readonly Tribeea.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CreateModel(Tribeea.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext context)
         {
             _context = context;
         }

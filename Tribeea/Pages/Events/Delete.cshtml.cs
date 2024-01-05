@@ -12,9 +12,9 @@ namespace Tribeea.Pages.Events
 {
     public class DeleteModel : PageModel
     {
-        private readonly Tribeea.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DeleteModel(Tribeea.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context)
         {
             _context = context;
         }

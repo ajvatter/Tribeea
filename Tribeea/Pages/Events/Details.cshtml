@@ -73,6 +73,42 @@
         </div>
     </form>
 </div>
+
+<div>
+    <h4>Scorecard</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ranking
+                </th>
+                <th>
+                    Team Name
+                </th>
+                <th>
+                    Score
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ScorecardViewmodels)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ranking)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Score)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <div>
     <h4>Available Teams</h4>
     <hr />
@@ -96,7 +132,6 @@
                     </td>
                     <td>
                         <a asp-route="CreateScorecard" asp-route-teamId="@item.Id" asp-route-eventId="@Model.Event.Id">Create Scorecard</a>
-                        @* @Html.ActionLink("Create Scorecard 2", "CreateScorecard", "Scorecards", new { teamId = item.Id, eventId = Model.Event.Id }, null) *@
                     </td>
                 </tr>
             }

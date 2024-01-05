@@ -12,9 +12,9 @@ namespace Tribeea.Pages.Events
 {
     public class IndexModel : PageModel
     {
-        private readonly Tribeea.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(Tribeea.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
