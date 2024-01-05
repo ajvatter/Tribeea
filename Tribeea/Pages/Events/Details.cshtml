@@ -1,0 +1,109 @@
+﻿@page
+@model Tribeea.Pages.Events.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Event.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Event.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Event.EventDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Event.EventDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Event.MusicUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Event.MusicUrl)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Selected Teams</h4>
+    <hr />
+    <form method="post">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Scorecards[0].Team.Name)
+                    </th>
+                    <th>Round 1</th>
+                    <th>Round 2</th>
+                    <th>Round 3</th>
+                    <th>Round 4</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (int i = 0; i < Model.Scorecards.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Scorecards[i].Team.Name)
+                            <input type="hidden" asp-for="@Model.Scorecards[i].Id" />
+                            <input type="hidden" asp-for="@Model.Scorecards[i].EventId" />
+                            <input type="hidden" asp-for="@Model.Scorecards[i].TeamId" />
+                            <input type="hidden" asp-for="@Model.Event.Id" />
+                            <input type="hidden" asp-for="@Model.Event.Name" />
+                        </td>
+                        <td><input class="scoreInput" asp-for="@Model.Scorecards[i].RoundOneScore" /></td>
+                        <td><input class="scoreInput" asp-for="@Model.Scorecards[i].RoundTwoScore" /></td>
+                        <td><input class="scoreInput" asp-for="@Model.Scorecards[i].RoundThreeScore" /></td>
+                        <td><input class="scoreInput" asp-for="@Model.Scorecards[i].RoundFourScore" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <input asp-route-id="@Model.Event.Id" type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>
+    <h4>Available Teams</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Teams[0].Name)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Teams)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-route="CreateScorecard" asp-route-teamId="@item.Id" asp-route-eventId="@Model.Event.Id">Create Scorecard</a>
+                        @* @Html.ActionLink("Create Scorecard 2", "CreateScorecard", "Scorecards", new { teamId = item.Id, eventId = Model.Event.Id }, null) *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Event.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
