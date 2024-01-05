@@ -112,7 +112,7 @@ namespace Tribeea.Controllers
 
             _context.SaveChangesAsync();
 
-            return RedirectToPage("./events", new { id = eventId });
+            return Redirect($"/Events/Details?id={eventId}");
         }
     }
 }
