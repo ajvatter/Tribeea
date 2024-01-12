@@ -110,7 +110,14 @@ namespace Tribeea.Controllers
             scorecard.TeamId = teamId;
             _context.Scorecards.Add(scorecard);
 
-            _context.SaveChangesAsync();
+            try
+            {
+                _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 
             return Redirect($"/Events/Details?id={eventId}");
         }

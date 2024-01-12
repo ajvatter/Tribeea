@@ -24,6 +24,7 @@ namespace Tribeea.Pages.Events
         [BindProperty]
         public IList<Scorecard> Scorecards { get; set; }
         public List<ScorecardViewmodel> ScorecardViewmodels { get; set; }
+        public List<ScorecardViewmodel> MonthlyScorecardViewmodels { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -44,38 +45,12 @@ namespace Tribeea.Pages.Events
                 var scorecardIds = Scorecards.Select(x => x.TeamId).ToList();
                 Teams = await _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToListAsync();
                 ScorecardViewmodels = new List<ScorecardViewmodel>();
-                using (var conn = new SqlConnection(_context.Database.GetConnectionString()))
-                {
-                    using (var cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new SqlParameter("@eventId", id));
-                        cmd.CommandText = "usp_GetEventScorecard";
-                        conn.Open();
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                var dt = new DataTable();
-                                dt.Load(reader);
-
-                                foreach (DataRow row in dt.Rows)
-                                {
-                                    ScorecardViewmodels.Add(new ScorecardViewmodel()
-                                    {
-                                        Ranking = row[0].ToString(),
-                                        TeamName = row[1].ToString(),
-                                        Score = (int)row[2]
-                                    });
-                                }
-                            }
-                        }
-                    }
-                }
+                ScorecardViewmodels = GetScorecard(id, "usp_GetEventScorecard");
+                MonthlyScorecardViewmodels = GetScorecard(id, "usp_GetMonthlyEventScorecard");
             }
 
             return Page();
-        }
+        }        
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
@@ -108,38 +83,45 @@ namespace Tribeea.Pages.Events
                 Scorecards = await _context.Scorecards.Where(x => x.EventId == id).Include(y => y.Team).ToListAsync();
                 var scorecardIds = Scorecards.Select(x => x.TeamId).ToList();
                 Teams = await _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToListAsync();
-                ScorecardViewmodels = new List<ScorecardViewmodel>();
-                using (var conn = new SqlConnection(_context.Database.GetConnectionString()))
-                {
-                    using (var cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new SqlParameter("@eventId", id));
-                        cmd.CommandText = "usp_GetEventScorecard";
-                        conn.Open();
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                var dt = new DataTable();
-                                dt.Load(reader);
+                ScorecardViewmodels = GetScorecard(id, "usp_GetEventScorecard");
+                MonthlyScorecardViewmodels = GetScorecard(id, "usp_GetMonthlyEventScorecard");
+            }
 
-                                foreach (DataRow row in dt.Rows)
+            return Page();
+        }
+
+        private List<ScorecardViewmodel> GetScorecard(int? id, string spName)
+        {
+            List<ScorecardViewmodel>  scorecardsView = new List<ScorecardViewmodel>();
+            using (var conn = new SqlConnection(_context.Database.GetConnectionString()))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@eventId", id));
+                    cmd.CommandText = spName;
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            var dt = new DataTable();
+                            dt.Load(reader);
+
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                scorecardsView.Add(new ScorecardViewmodel()
                                 {
-                                    ScorecardViewmodels.Add(new ScorecardViewmodel()
-                                    {
-                                        Ranking = row[0].ToString(),
-                                        TeamName = row[1].ToString(),
-                                        Score = (int)row[2]
-                                    });
-                                }
+                                    Ranking = row[0].ToString(),
+                                    TeamName = row[1].ToString(),
+                                    Score = (int)row[2]
+                                });
                             }
                         }
                     }
                 }
             }
-
-            return Page();
+            return scorecardsView;
         }
     }
 }

@@ -400,3 +400,5 @@ FodyWeavers.xsd
 Tribeea/bin/
 
 Tribeea/obj/
+
+Tribeea/appsettings.json

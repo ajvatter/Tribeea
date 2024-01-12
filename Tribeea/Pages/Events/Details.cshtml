@@ -31,7 +31,14 @@
         </dd>
     </dl>
 </div>
-<div>
+
+<div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'SelectedTeams')">Selected Teams</button>
+    <button class="tablinks" onclick="openTab(event, 'Scorecard')">Scorecard</button>
+    <button class="tablinks" onclick="openTab(event, 'MonthlyScorecard')">Monthly Scorecard</button>
+    <button class="tablinks" onclick="openTab(event, 'AvailableTeams')">Available Teams</button>
+</div>
+<div id="SelectedTeams" class="tabcontent active">
     <h4>Selected Teams</h4>
     <hr />
     <form method="post">
@@ -74,7 +81,7 @@
     </form>
 </div>
 
-<div>
+<div id="Scorecard" class="tabcontent">
     <h4>Scorecard</h4>
     <hr />
     <table class="table">
@@ -109,7 +116,44 @@
         </tbody>
     </table>
 </div>
-<div>
+
+<div id="MonthlyScorecard" class="tabcontent">
+    <h4>Scorecard</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ranking
+                </th>
+                <th>
+                    Team Name
+                </th>
+                <th>
+                    Score
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MonthlyScorecardViewmodels)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ranking)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Score)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="AvailableTeams" class="tabcontent">
     <h4>Available Teams</h4>
     <hr />
     <table class="table">
@@ -142,3 +186,27 @@
     <a asp-page="./Edit" asp-route-id="@Model.Event.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<script>
+    function openTab(evt, tabName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            // tabcontent[i].style.display = "none";
+            tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).className += " active"; // .style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
