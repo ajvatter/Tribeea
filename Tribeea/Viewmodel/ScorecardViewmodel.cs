@@ -4,6 +4,6 @@
     {
         public string? Ranking { get; set; }
         public string? TeamName { get; set; }
-        public int Score {  get; set; }
+        public float Score {  get; set; }
     }
 }

@@ -93,13 +93,13 @@ namespace Tribeea.Controllers
             Name = "CreateScorecard")]
         public IActionResult CreateScorecard(int teamId, int eventId)
         {
-            var eventRecord = _context.Events.FirstOrDefaultAsync(m => m.Id == eventId);
+            var eventRecord = _context.Events.FirstOrDefault(m => m.Id == eventId);
             if (eventRecord == null)
             {
                 return NotFound();
             }
 
-            var teamRecord = _context.Teams.FirstOrDefaultAsync(m => m.Id == teamId);
+            var teamRecord = _context.Teams.FirstOrDefault(m => m.Id == teamId);
             if (teamRecord == null)
             {
                 return NotFound();
@@ -112,7 +112,7 @@ namespace Tribeea.Controllers
 
             try
             {
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch(Exception ex)
             {

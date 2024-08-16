@@ -33,7 +33,7 @@ namespace Tribeea.Pages.Events
                 return NotFound();
             }
 
-            var eventRecord = await _context.Events.FirstOrDefaultAsync(m => m.Id == id);
+            var eventRecord = _context.Events.FirstOrDefault(m => m.Id == id);
             if (eventRecord == null)
             {
                 return NotFound();
@@ -41,9 +41,9 @@ namespace Tribeea.Pages.Events
             else
             {
                 Event = eventRecord;
-                Scorecards = await _context.Scorecards.Where(x => x.EventId == id).Include(y => y.Team).ToListAsync();
+                Scorecards =  _context.Scorecards.Where(x => x.EventId == id).Include(y => y.Team).OrderBy(z => z.Team.Name).ToList();
                 var scorecardIds = Scorecards.Select(x => x.TeamId).ToList();
-                Teams = await _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToListAsync();
+                Teams =  _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToList();
                 ScorecardViewmodels = new List<ScorecardViewmodel>();
                 ScorecardViewmodels = GetScorecard(id, "usp_GetEventScorecard");
                 MonthlyScorecardViewmodels = GetScorecard(id, "usp_GetMonthlyEventScorecard");
@@ -69,10 +69,10 @@ namespace Tribeea.Pages.Events
                 _context.Attach(scorecard).State = EntityState.Modified;
             }
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
 
-            var eventRecord = await _context.Events.FirstOrDefaultAsync(m => m.Id == id);
+            var eventRecord = _context.Events.FirstOrDefault(m => m.Id == id);
             if (eventRecord == null)
             {
                 return NotFound();
@@ -80,9 +80,9 @@ namespace Tribeea.Pages.Events
             else
             {
                 Event = eventRecord;
-                Scorecards = await _context.Scorecards.Where(x => x.EventId == id).Include(y => y.Team).ToListAsync();
+                Scorecards = _context.Scorecards.Where(x => x.EventId == id).Include(y => y.Team).OrderBy(z => z.Team.Name).ToList();
                 var scorecardIds = Scorecards.Select(x => x.TeamId).ToList();
-                Teams = await _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToListAsync();
+                Teams = _context.Teams.Where(x => !scorecardIds.Contains(x.Id)).OrderBy(y => y.Name).ToList();
                 ScorecardViewmodels = GetScorecard(id, "usp_GetEventScorecard");
                 MonthlyScorecardViewmodels = GetScorecard(id, "usp_GetMonthlyEventScorecard");
             }
@@ -114,7 +114,7 @@ namespace Tribeea.Pages.Events
                                 {
                                     Ranking = row[0].ToString(),
                                     TeamName = row[1].ToString(),
-                                    Score = (int)row[2]
+                                    Score = Convert.ToSingle(row[2])
                                 });
                             }
                         }
