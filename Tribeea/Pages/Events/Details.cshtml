@@ -37,6 +37,7 @@
     <button class="tablinks" onclick="openTab(event, 'Scorecard')">Scorecard</button>
     <button class="tablinks" onclick="openTab(event, 'MonthlyScorecard')">Monthly Scorecard</button>
     <button class="tablinks" onclick="openTab(event, 'AvailableTeams')">Available Teams</button>
+    <button class="tablinks" onclick="openTab(event, 'Prizes')">Prizes</button>
 </div>
 <div id="SelectedTeams" class="tabcontent active">
     <h4>Selected Teams</h4>
@@ -181,6 +182,46 @@
             }
         </tbody>
     </table>
+</div>
+<div id="Prizes" class="tabcontent">
+    <h4>Prizes</h4>
+    <hr />
+    <ul>
+        <li>
+            9 or less Teams
+            <ol>
+                <li>1 pull</li>
+                <li>Punch Cards</li>
+            </ol>
+        </li>
+        <li>
+            10 - 12 Teams
+            <ol>
+                <li>1 pull</li>
+                <li>Punch Cards</li>
+                <li>Punch Cards</li>
+            </ol>
+        </li>
+        <li>
+            13 - 15 Teams
+            <ol>
+                <li>2 pulls</li>
+                <li>1 pull</li>
+                <li>Punch Cards</li>
+                <li>Punch Cards</li>
+            </ol>
+        </li>
+        <li>
+            16 or more Teams
+            <ol>
+                <li>2 pulls</li>
+                <li>1 pull</li>
+                <li>1 pull</li>
+                <li>Punch Cards</li>
+                <li>Punch Cards</li>
+            </ol>
+        </li>
+    </ul>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Event.Id">Edit</a> |

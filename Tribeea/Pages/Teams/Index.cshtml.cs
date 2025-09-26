@@ -23,7 +23,7 @@ namespace Tribeea.Pages.Teams
 
         public async Task OnGetAsync()
         {
-            Team = await _context.Teams.ToListAsync();
+            Team = await _context.Teams.OrderBy(x => x.Name).ToListAsync();
         }
     }
 }
